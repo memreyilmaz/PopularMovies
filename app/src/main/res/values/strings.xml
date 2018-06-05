@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <string name="movie_title_label">Title</string>
+    <string name="movie_release_date_label">Release Date</string>
+    <string name="movie_user_rating_label">User Rating</string>
+    <string name="movie_plot_synopsis_label">Plot Synopsis</string>
+
+    <string name="sort_title">Sort</string>
+
+    <string name="parcel_movie">PARCEL_MOVIE</string>
+
+    <string name="no_internet_connection">Please check your internet connection.</string>
+
+    <string name="settings_sort_by_list_label">Sort By:</string>
+    <string name="settings_sort_by_list_key">sort_by</string>
+    <string name="settings_sort_by_list_default">@string/settings_sort_by_most_popular_value</string>
+
+    <string name="settings_sort_by_highest_rated_label">Highest Rated</string>
+    <string name="settings_sort_by_highest_rated_value" translatable="false">top_rated</string>
+
+    <string name="settings_sort_by_most_popular_label">Most Popular</string>
+    <string name="settings_sort_by_most_popular_value" translatable="false">popular</string>
+
+</resources>
