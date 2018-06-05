@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private static final String TMDB_REQUEST_URL =
             "https://api.themoviedb.org/3/movie";
 
-    private static final String API_KEY = "fa0a36c54bae48da04a507ac7ce6126f";
+    private static final String API_KEY = "";
     /**
      * Constant value for the movie loader ID.
      */
