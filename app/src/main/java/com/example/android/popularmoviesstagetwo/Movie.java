@@ -3,28 +3,67 @@ package com.example.android.popularmoviesstagetwo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Movie implements Parcelable{
 
-    private String title;
-    private String releaseDate;
-    private String moviePoster;
-    private String userRating;
-    private String plotSynopsis;
 
-    public Movie(String title, String releaseDate, String moviePoster, String userRating, String plotSynopsis) {
+    @SerializedName("title")
+    @Expose
+    private String title;
+    @SerializedName("release_date")
+    @Expose
+    private String releaseDate;
+    @SerializedName("poster_path")
+    @Expose
+    private String posterPath;
+    @SerializedName("vote_average")
+    @Expose
+    private double voteAverage;
+    @SerializedName("overview")
+    @Expose
+    private String overview;
+
+    public Movie(String title, String releaseDate, String posterPath, double voteAverage, String overview) {
+        super();
         this.title = title;
         this.releaseDate = releaseDate;
-        this.moviePoster = moviePoster;
-        this.userRating = userRating;
-        this.plotSynopsis = plotSynopsis;
+        this.voteAverage = voteAverage;
+        this.overview = overview;
+        this.posterPath = posterPath;
+    }
+
+    public Movie() {
     }
 
     private Movie (Parcel in){
+
+        //moviePoster = in.readString();
         title = in.readString();
         releaseDate = in.readString();
-        moviePoster = in.readString();
-        userRating = in.readString();
-        plotSynopsis = in.readString();
+        posterPath = in.readString();
+        voteAverage = in.readDouble();
+        overview = in.readString();
+     //   this.voteAverage = ((double) in.readValue((double.class.getClassLoader())));
+    //    this.title = ((String) in.readValue((String.class.getClassLoader())));
+     //   this.posterPath = ((String) in.readValue((String.class.getClassLoader())));
+    //    this.overview = ((String) in.readValue((String.class.getClassLoader())));
+     //   this.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
+    public Movie withVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
+        return this;
     }
 
     public String getTitle() {
@@ -35,6 +74,39 @@ public class Movie implements Parcelable{
         this.title = title;
     }
 
+    public Movie withTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
+    public Movie withPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+        return this;
+    }
+
+
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public Movie withOverview(String overview) {
+        this.overview = overview;
+        return this;
+    }
+
     public String getReleaseDate() {
         return releaseDate;
     }
@@ -43,28 +115,9 @@ public class Movie implements Parcelable{
         this.releaseDate = releaseDate;
     }
 
-    public String getMoviePoster() {
-        return moviePoster;
-    }
-
-    public void setMoviePoster(String moviePoster) {
-        this.moviePoster = moviePoster;
-    }
-
-    public String getUserRating() {
-        return userRating;
-    }
-
-    public void setUserRating(String userRating) {
-        this.userRating = userRating;
-    }
-
-    public String getPlotSynopsis() {
-        return plotSynopsis;
-    }
-
-    public void setPlotSynopsis(String plotSynopsis) {
-        this.plotSynopsis = plotSynopsis;
+    public Movie withReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+        return this;
     }
 
     @Override
@@ -74,22 +127,28 @@ public class Movie implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeDouble(voteAverage);
         parcel.writeString(title);
+        parcel.writeString(posterPath);
+        parcel.writeString(overview);
         parcel.writeString(releaseDate);
-        parcel.writeString(moviePoster);
-        parcel.writeString(userRating);
-        parcel.writeString(plotSynopsis);
     }
 
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+
+        /*@SuppressWarnings({
+                "unchecked"
+        })*/
         @Override
         public Movie createFromParcel(Parcel parcel) {
             return new Movie(parcel);
         }
 
-        @Override
+        //@Override
         public Movie[] newArray(int i) {
             return new Movie[i];
         }
     };
 }
+

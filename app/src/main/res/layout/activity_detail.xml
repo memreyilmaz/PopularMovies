@@ -53,31 +53,31 @@
 
     <TextView
         android:paddingTop="8dp"
-        android:id="@+id/movie_user_rating_textView"
+        android:id="@+id/movie_vote_average_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/movie_user_rating_label"
+        android:text="@string/movie_vote_average_label"
         android:layout_toRightOf="@id/movie_poster"
         android:textStyle="bold"
         android:layout_below="@id/movie_release_date"/>
 
     <TextView
         android:paddingTop="8dp"
-        android:id="@+id/movie_user_rating"
+        android:id="@+id/movie_vote_average"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="movie_user_rating"
+        tools:text="movie_vote_average"
         android:layout_toRightOf="@id/movie_poster"
-        android:layout_below="@id/movie_user_rating_textView"/>
+        android:layout_below="@id/movie_vote_average_textView"/>
 
     <TextView
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
-        android:id="@+id/movie_plot_synopsis_textView"
+        android:id="@+id/movie_overview_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:text="@string/movie_plot_synopsis_label"
+        android:text="@string/movie_overview_label"
         android:layout_below="@id/movie_poster"/>
 
     <TextView
@@ -85,10 +85,10 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingBottom="16dp"
-        android:id="@+id/movie_plot_synopsis"
+        android:id="@+id/movie_overview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/movie_plot_synopsis_textView"
-        tools:text="movie_plot_synopsis"/>
+        android:layout_below="@id/movie_overview_textView"
+        tools:text="movie_overview"/>
    </RelativeLayout>
 </ScrollView>

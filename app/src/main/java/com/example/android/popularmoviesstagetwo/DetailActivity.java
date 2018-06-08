@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso;
 public class DetailActivity extends AppCompatActivity {
 
     public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
+    private Movie mCurrentMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,10 +19,10 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         Intent intent = getIntent();
-        Movie movie = intent.getParcelableExtra(getString(R.string.parcel_movie));
+        mCurrentMovie = intent.getParcelableExtra(getString(R.string.parcel_movie));
 
         // Get the title string from the Movie object,
-        String movieTitle = movie.getTitle();
+        String movieTitle = mCurrentMovie.getTitle();
 
         // Find the TextView with view ID title
         TextView titleTextView = (TextView) findViewById(R.id.movie_title);
@@ -30,7 +31,7 @@ public class DetailActivity extends AppCompatActivity {
         titleTextView.setText(movieTitle);
 
         // Get the release date string from the Movie object,
-        String movieReleaseDate = movie.getReleaseDate();
+        String movieReleaseDate = mCurrentMovie.getReleaseDate();
 
         // Find the TextView with view ID release date
         TextView releaseDateTextView = (TextView) findViewById(R.id.movie_release_date);
@@ -41,28 +42,28 @@ public class DetailActivity extends AppCompatActivity {
         // Find the ImageView with view ID poster
         ImageView posterImageView = (ImageView) findViewById(R.id.movie_poster);
 
-        String poster = POSTER_PATH + movie.getMoviePoster();
+        String poster = POSTER_PATH + mCurrentMovie.getPosterPath();
 
         Picasso.with(this)
                 .load(poster)
                 .into(posterImageView);
 
         // Get the user rating string from the Movie object,
-        String movieUserRating = movie.getUserRating();
+        //double movieVoteAverage = movie.getVoteAverage();
 
         // Find the TextView with view ID user rating
-        TextView ratingTextView = (TextView) findViewById(R.id.movie_user_rating);
+        //TextView voteAverageTextView = (TextView) findViewById(R.id.movie_vote_average);
 
         // Display the rating of the current movie in that TextView
-        ratingTextView.setText(movieUserRating);
+        //voteAverageTextView.setText(getString(R.string.label_vote_display, movie.getVoteAverage()));
 
-        // Get the plot synopsis string from the Movie object,
-        String moviePlotSynopsis = movie.getPlotSynopsis();
+        // Get the overview string from the Movie object,
+        String overview = mCurrentMovie.getOverview();
 
-        // Find the TextView with view ID plotsynopsis
-        TextView plotsynopsisTextView = (TextView) findViewById(R.id.movie_plot_synopsis);
+        // Find the TextView with view ID overview
+        TextView overviewTextView = (TextView) findViewById(R.id.movie_overview);
 
-        // Display the plot synopsis of the current movie in that TextView
-        plotsynopsisTextView.setText(moviePlotSynopsis);
+        // Display the overview of the current movie in that TextView
+        overviewTextView.setText(overview);
     }
 }

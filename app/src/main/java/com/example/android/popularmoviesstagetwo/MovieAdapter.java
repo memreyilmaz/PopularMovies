@@ -18,12 +18,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
 
     private List<Movie> movies;
-
+    private MovieResponse mMovieResponse;
     private Context context;
     private MovieAdapterOnClickHandler movieAdapterOnClickHandler;
 
     public interface MovieAdapterOnClickHandler {
-        void onClick(View view, int position);
+        void onClick(Movie movie);
     }
 
     public MovieAdapter(List<Movie> movies, MovieAdapterOnClickHandler movieAdapterOnClickHandler) {
@@ -44,8 +44,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-            Movie movie = movies.get(adapterPosition);
-            movieAdapterOnClickHandler.onClick(view, adapterPosition);
+            Movie movie = mMovieResponse.getMovies().get(adapterPosition);
+            movieAdapterOnClickHandler.onClick(movie);
         }
     }
 
@@ -60,37 +60,45 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
-        Movie movie = movies.get(position);
-        String poster = POSTER_PATH + movie.getMoviePoster();
+
+        Movie movie = mMovieResponse.getMovies().get(position);
+        String poster = POSTER_PATH + movie.getPosterPath();
         Picasso.with(context)
                 .load(poster)
                 .resize(506, 759)
                 .centerCrop()
                 .into(holder.posterImageView);
+
     }
 
     @Override
     public int getItemCount() {
-        if (null == movies) return 0;
-        return movies.size();
+        if (null == mMovieResponse) return 0;
+        return mMovieResponse.getMovies().size();
     }
 
-    public void addAll(List<Movie> movie) {
+    /*public void addAll(List<Movie> movie) {
         if (movies != null)
             movies.clear();
         movies.addAll(movie);
         notifyDataSetChanged();
-    }
+    }*/
 
-    public void clear() {
+    /*public void clear() {
         if (movies != null)
             movies.clear();
         notifyDataSetChanged();
-    }
+    }*/
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public void setMovieData(MovieResponse movieResponse) {
+        mMovieResponse = movieResponse;
+        movies = mMovieResponse.getMovies();
+        notifyDataSetChanged();
     }
 
 }

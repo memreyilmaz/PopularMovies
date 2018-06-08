@@ -1,28 +1,24 @@
 package com.example.android.popularmoviesstagetwo;
 
-import android.app.LoaderManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler,LoaderManager.LoaderCallbacks<List<Movie>>{
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler{
+    private static final String TAG = MainActivity.class.getSimpleName();
     /** URL for movie data from the TMDB dataset */
     private static final String TMDB_REQUEST_URL =
             "https://api.themoviedb.org/3/movie";
@@ -33,13 +29,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
      */
     private static final int MOVIE_LOADER_ID = 1;
     List<Movie> movies= new ArrayList<>();
-
+    private MovieResponse mMovieResponse;
     public MovieAdapter.MovieAdapterOnClickHandler clickHandler;
     /**
      * Adapter for the list of movies
      */
     private MovieAdapter mAdapter;
-    private Movie movie;
+    private Movie mCurrentMovie;
     /** TextView that is displayed when the list is empty */
     private TextView mEmptyStateTextView;
 
@@ -49,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         setContentView(R.layout.activity_main);
 
         // Find a reference to the {@link GridView} in the layout
-        RecyclerView movieListView = (RecyclerView) findViewById(R.id.movie_image);
-        mAdapter = new MovieAdapter(movies, clickHandler);
+        final RecyclerView movieListView = (RecyclerView) findViewById(R.id.movie_image);
+        mAdapter = new MovieAdapter(movies, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         movieListView.setLayoutManager(layoutManager);
         movieListView.setHasFixedSize(true);
@@ -59,9 +55,32 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         //movieListView.setEmptyView(mEmptyStateTextView);
         // Create a new adapter that takes an empty list of movies as input
         //movieListView.setOnClickListener();
+        TmdbApiInterface apiService =
+                TmdbApiClient.getClient().create(TmdbApiInterface.class);
 
+        Call<MovieResponse> call = apiService.getTopRatedMovies(API_KEY);
+        call.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                Log.d(TAG, call.request().url().toString());
+                int statusCode = response.code();
+                mMovieResponse = response.body();
+                //movieListView.setAdapter(new MovieAdapter(movies, clickHandler));
+                mAdapter.setMovieData(mMovieResponse);
+                mAdapter.notifyDataSetChanged();
+                movies = mMovieResponse.getMovies();
+                //mAdapter.addAll(movies);
+                //mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
         // Get a reference to the ConnectivityManager to check state of network connectivity
-        ConnectivityManager connMgr = (ConnectivityManager)
+        /*ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
 
         // Get details on the currently active default data network
@@ -79,11 +98,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         } else {
             // Update empty state with no connection error message
             mEmptyStateTextView.setText(R.string.no_internet_connection);
-        }
+        }*/
     }
 
     // onCreateLoader instantiates and returns a new Loader for the given ID
-    @Override
+    /*@Override
     public Loader<List<Movie>> onCreateLoader(int i, Bundle bundle) {
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -99,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                   .build();
 
         return new MovieLoader(this, uriBuilder.toString());
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
         // Clear the adapter of previous movie data
         mAdapter.clear();
@@ -112,12 +131,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             mAdapter.addAll(movies);
             mAdapter.notifyDataSetChanged();
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onLoaderReset (Loader < List < Movie >> loader) {
         mAdapter.clear();
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,13 +159,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
 
     @Override
-    public void onClick(View view, int position) {
-        Context context = this;
-        //mCurrentMovie = movie;
+    public void onClick(Movie movie) {
+        //Context context = this;
+        mCurrentMovie = movie;
 
-        movie = movies.get(position);
-        Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(getResources().getString(R.string.parcel_movie), movie);
+        //movie = movies.get(position);
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra(getResources().getString(R.string.parcel_movie), mCurrentMovie);
 
         startActivity(intent);
     }
