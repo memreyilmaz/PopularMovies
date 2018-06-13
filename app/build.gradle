@@ -19,6 +19,14 @@ android {
     dataBinding {
         enabled = true
     }
+
+
+    buildTypes {
+        customDebugType {
+            debuggable true
+        }
+    }
+
 }
 
 dependencies {
