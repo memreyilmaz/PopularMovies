@@ -26,10 +26,14 @@ public class DetailActivity extends AppCompatActivity {
     public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
     private Movie mCurrentMovie;
     List<Review> reviews= new ArrayList<>();
+    List<Trailer> trailers= new ArrayList<>();
     private ReviewResponse mReviewResponse;
+    private TrailerResponse mTrailerResponse;
 
-    private ReviewAdapter mAdapter;
+    private ReviewAdapter mReviewAdapter;
+    private TrailerAdapter mTrailAdapter;
     private Review mCurrentReview;
+    private Trailer mCurrentTrailer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,35 +89,68 @@ public class DetailActivity extends AppCompatActivity {
         overviewTextView.setText(overview);
 
 
-            final RecyclerView reviewCardView = (RecyclerView) findViewById(R.id.movie_review);
-            mAdapter = new ReviewAdapter(reviews);
+            final RecyclerView reviewCardView = (RecyclerView) findViewById(R.id.movie_review_recycler_view);
+            mReviewAdapter = new ReviewAdapter(reviews);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
             reviewCardView.setLayoutManager(layoutManager);
             reviewCardView.setHasFixedSize(true);
-            reviewCardView.setAdapter(mAdapter);
+            reviewCardView.setAdapter(mReviewAdapter);
             reviewCardView.setItemAnimator(new DefaultItemAnimator());
 
-            TmdbReviewInterface apiService =
+            TmdbReviewInterface reviewApiService =
                     TmdbApiClient.getClient().create(TmdbReviewInterface.class);
 
-            Call<ReviewResponse> call = apiService.getMovieReviews(mCurrentMovie.getId(), API_KEY);
-            call.enqueue(new Callback<ReviewResponse>() {
+            Call<ReviewResponse> reviewCall = reviewApiService.getMovieReviews(mCurrentMovie.getId(), API_KEY);
+            reviewCall.enqueue(new Callback<ReviewResponse>() {
                 @Override
-                public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
-                    Log.d(TAG, call.request().url().toString());
-                    int statusCode = response.code();
+                public void onResponse(Call<ReviewResponse> reviewCall, Response<ReviewResponse> response) {
+                    Log.d(TAG, reviewCall.request().url().toString());
+                    int reviewStatusCode = response.code();
                     mReviewResponse = response.body();
-                    mAdapter.setReviewData(mReviewResponse);
-                    mAdapter.notifyDataSetChanged();
+                    mReviewAdapter.setReviewData(mReviewResponse);
+                    mReviewAdapter.notifyDataSetChanged();
                     reviews = mReviewResponse.getReviews();
+
+                }
+
+                @Override
+                public void onFailure(Call<ReviewResponse> call, Throwable t) {
+                    Log.e(TAG, t.toString());
+
+                }
+            });
+
+            final RecyclerView trailerCardView = (RecyclerView) findViewById(R.id.movie_trailer_recycler_view);
+            mTrailAdapter = new TrailerAdapter(trailers);
+            LinearLayoutManager trailerlayoutManager = new LinearLayoutManager(this);
+            trailerlayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+            trailerCardView.setLayoutManager(trailerlayoutManager);
+            trailerCardView.setHasFixedSize(true);
+            trailerCardView.setAdapter(mTrailAdapter);
+            trailerCardView.setItemAnimator(new DefaultItemAnimator());
+
+            TmdbTrailerInterface trailerapiService =
+                    TmdbApiClient.getClient().create(TmdbTrailerInterface.class);
+
+            Call<TrailerResponse> trailerCall = trailerapiService.getMovieTrailers(mCurrentMovie.getId(), API_KEY);
+            trailerCall.enqueue(new Callback<TrailerResponse>() {
+                @Override
+                public void onResponse(Call<TrailerResponse> trailerCall, Response<TrailerResponse> response) {
+                    Log.d(TAG, trailerCall.request().url().toString());
+                    int trailerStatusCode = response.code();
+                    mTrailerResponse = response.body();
+                    mTrailAdapter.setTrailerData(mTrailerResponse);
+                    mTrailAdapter.notifyDataSetChanged();
+                    trailers = mTrailerResponse.getTrailers();
 
                 }
 
 
                 @Override
-                public void onFailure(Call<ReviewResponse> call, Throwable t) {
+                public void onFailure(Call<TrailerResponse> call, Throwable t) {
                     Log.e(TAG, t.toString());
 
                 }

@@ -62,19 +62,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
         return mReviewResponse.getReviews().size();
     }
 
-    /*public void addAll(List<Movie> movie) {
-        if (movies != null)
-            movies.clear();
-        movies.addAll(movie);
-        notifyDataSetChanged();
-    }*/
-
-    /*public void clear() {
-        if (movies != null)
-            movies.clear();
-        notifyDataSetChanged();
-    }*/
-
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);

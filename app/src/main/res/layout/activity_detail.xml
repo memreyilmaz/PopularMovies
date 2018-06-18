@@ -95,7 +95,14 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_below="@id/movie_overview"
-            android:id="@+id/movie_review"
+            android:id="@+id/movie_trailer_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@id/movie_trailer_recycler_view"
+            android:id="@+id/movie_review_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView>
