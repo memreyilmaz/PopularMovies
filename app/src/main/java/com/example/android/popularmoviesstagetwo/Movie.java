@@ -52,6 +52,15 @@ public class Movie implements Parcelable{
      //   this.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
     }
 
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(releaseDate);
+        parcel.writeString(posterPath);
+        parcel.writeDouble(voteAverage);
+        parcel.writeString(overview);
+    }
+
 
     public double getVoteAverage() {
         return voteAverage;
@@ -125,15 +134,7 @@ public class Movie implements Parcelable{
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
 
-        parcel.writeDouble(voteAverage);
-        parcel.writeString(title);
-        parcel.writeString(posterPath);
-        parcel.writeString(overview);
-        parcel.writeString(releaseDate);
-    }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
 

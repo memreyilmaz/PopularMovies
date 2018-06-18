@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return super.onOptionsItemSelected(item);
     }
 
-
+  ///
     @Override
     public void onClick(Movie movie) {
         //Context context = this;
