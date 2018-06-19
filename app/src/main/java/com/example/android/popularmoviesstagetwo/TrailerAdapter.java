@@ -18,13 +18,19 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
     private List<Trailer> trailers;
     private TrailerResponse mTrailerResponse;
     private Context context;
+    private TrailerAdapter.TrailerAdapterOnClickHandler trailerAdapterOnClickHandler;
+
+    public interface TrailerAdapterOnClickHandler {
+        void onClick(Trailer trailer);
+    }
 
 
-    public TrailerAdapter(List<Trailer> trailers) {
+    public TrailerAdapter(List<Trailer> trailers, TrailerAdapterOnClickHandler trailerAdapterOnClickHandler) {
+        this.trailerAdapterOnClickHandler = trailerAdapterOnClickHandler;
         this.trailers = trailers;
     }
 
-    public class TrailerAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class TrailerAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView trailerImageView;
         public TextView trailerTextView;
         public CardView trailerCardView;
@@ -34,8 +40,15 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
             trailerImageView = view.findViewById(R.id.movie_trailer_play);
             trailerTextView = view.findViewById(R.id.movie_trailer);
             trailerCardView = view.findViewById(R.id.movie_trailer_card_view);
+            view.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            Trailer trailer = mTrailerResponse.getTrailers().get(adapterPosition);
+            trailerAdapterOnClickHandler.onClick(trailer);
+        }
     }
 
     @Override

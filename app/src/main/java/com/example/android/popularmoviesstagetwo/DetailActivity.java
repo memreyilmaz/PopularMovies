@@ -1,6 +1,7 @@
 package com.example.android.popularmoviesstagetwo;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements TrailerAdapter.TrailerAdapterOnClickHandler {
     private static final String TAG = DetailActivity.class.getSimpleName();
     private static final String API_KEY = "fa0a36c54bae48da04a507ac7ce6126f";
 
@@ -29,7 +30,7 @@ public class DetailActivity extends AppCompatActivity {
     List<Trailer> trailers= new ArrayList<>();
     private ReviewResponse mReviewResponse;
     private TrailerResponse mTrailerResponse;
-
+    public TrailerAdapter.TrailerAdapterOnClickHandler clickHandler;
     private ReviewAdapter mReviewAdapter;
     private TrailerAdapter mTrailAdapter;
     private Review mCurrentReview;
@@ -123,7 +124,7 @@ public class DetailActivity extends AppCompatActivity {
             });
 
             final RecyclerView trailerCardView = (RecyclerView) findViewById(R.id.movie_trailer_recycler_view);
-            mTrailAdapter = new TrailerAdapter(trailers);
+            mTrailAdapter = new TrailerAdapter(trailers,  this);
             LinearLayoutManager trailerlayoutManager = new LinearLayoutManager(this);
             trailerlayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -156,4 +157,13 @@ public class DetailActivity extends AppCompatActivity {
                 }
             });
             }
+
+    @Override
+    public void onClick(Trailer trailer) {
+        Uri url = Uri.parse("https://www.youtube.com/watch?v=" + trailer.getKey());
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, url);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        startActivity(intent);
     }
+}
