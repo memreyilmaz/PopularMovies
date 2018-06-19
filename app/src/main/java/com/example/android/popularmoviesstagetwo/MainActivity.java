@@ -1,7 +1,9 @@
 package com.example.android.popularmoviesstagetwo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,10 +57,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         //movieListView.setEmptyView(mEmptyStateTextView);
         // Create a new adapter that takes an empty list of movies as input
         //movieListView.setOnClickListener();
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String sort_by = sharedPrefs.getString(
+                getString(R.string.settings_sort_by_list_key),
+                getString(R.string.settings_sort_by_list_default));
+
+
         TmdbApiInterface apiService =
                 TmdbApiClient.getClient().create(TmdbApiInterface.class);
 
-        Call<MovieResponse> call = apiService.getTopRatedMovies(API_KEY);
+        Call<MovieResponse> call = apiService.getMovieList(sort_by, API_KEY);
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
