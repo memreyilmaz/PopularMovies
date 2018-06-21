@@ -1,33 +1,44 @@
 package com.example.android.popularmoviesstagetwo;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "favourite_movies")
 public class Movie implements Parcelable{
-
+    @ColumnInfo(name = "id")
+    @PrimaryKey
     @SerializedName("id")
     @Expose
-    private int id;
+    public int id;
+    @ColumnInfo(name = "title")
     @SerializedName("title")
     @Expose
     private String title;
+    @ColumnInfo(name = "release_date")
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
+    @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
+    @ColumnInfo(name = "vote_average")
     @SerializedName("vote_average")
     @Expose
     private double voteAverage;
+    @ColumnInfo(name = "overview")
     @SerializedName("overview")
     @Expose
     private String overview;
 
-    public Movie(int id,String title, String releaseDate, String posterPath, double voteAverage, String overview) {
+    public Movie(int id,String title, String releaseDate, double voteAverage, String overview, String posterPath) {
         super();
         this.id = id;
         this.title = title;
@@ -36,7 +47,7 @@ public class Movie implements Parcelable{
         this.overview = overview;
         this.posterPath = posterPath;
     }
-
+    @Ignore
     public Movie() {
     }
 

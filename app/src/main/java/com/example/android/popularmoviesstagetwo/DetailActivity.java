@@ -1,15 +1,22 @@
 package com.example.android.popularmoviesstagetwo;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 
@@ -35,12 +42,14 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     private TrailerAdapter mTrailAdapter;
     private Review mCurrentReview;
     private Trailer mCurrentTrailer;
-
+    private FavouriteMoviesDatabase mDb;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        mDb = FavouriteMoviesDatabase.getsInstance(getApplicationContext());
         Intent intent = getIntent();
         mCurrentMovie = intent.getParcelableExtra(getString(R.string.parcel_movie));
 
@@ -89,74 +98,141 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         // Display the overview of the current movie in that TextView
         overviewTextView.setText(overview);
 
+        ToggleButton addfavouritesbutton = (ToggleButton) findViewById(R.id.add_favourite_button);
 
-            final RecyclerView reviewCardView = (RecyclerView) findViewById(R.id.movie_review_recycler_view);
-            mReviewAdapter = new ReviewAdapter(reviews);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-            reviewCardView.setLayoutManager(layoutManager);
-            reviewCardView.setHasFixedSize(true);
-            reviewCardView.setAdapter(mReviewAdapter);
-            reviewCardView.setItemAnimator(new DefaultItemAnimator());
-
-            TmdbReviewInterface reviewApiService =
-                    TmdbApiClient.getClient().create(TmdbReviewInterface.class);
-
-            Call<ReviewResponse> reviewCall = reviewApiService.getMovieReviews(mCurrentMovie.getId(), API_KEY);
-            reviewCall.enqueue(new Callback<ReviewResponse>() {
-                @Override
-                public void onResponse(Call<ReviewResponse> reviewCall, Response<ReviewResponse> response) {
-                    Log.d(TAG, reviewCall.request().url().toString());
-                    int reviewStatusCode = response.code();
-                    mReviewResponse = response.body();
-                    mReviewAdapter.setReviewData(mReviewResponse);
-                    mReviewAdapter.notifyDataSetChanged();
-                    reviews = mReviewResponse.getReviews();
-
-                }
-
-                @Override
-                public void onFailure(Call<ReviewResponse> call, Throwable t) {
-                    Log.e(TAG, t.toString());
-
-                }
-            });
-
-            final RecyclerView trailerCardView = (RecyclerView) findViewById(R.id.movie_trailer_recycler_view);
-            mTrailAdapter = new TrailerAdapter(trailers,  this);
-            LinearLayoutManager trailerlayoutManager = new LinearLayoutManager(this);
-            trailerlayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-            trailerCardView.setLayoutManager(trailerlayoutManager);
-            trailerCardView.setHasFixedSize(true);
-            trailerCardView.setAdapter(mTrailAdapter);
-            trailerCardView.setItemAnimator(new DefaultItemAnimator());
-
-            TmdbTrailerInterface trailerapiService =
-                    TmdbApiClient.getClient().create(TmdbTrailerInterface.class);
-
-            Call<TrailerResponse> trailerCall = trailerapiService.getMovieTrailers(mCurrentMovie.getId(), API_KEY);
-            trailerCall.enqueue(new Callback<TrailerResponse>() {
-                @Override
-                public void onResponse(Call<TrailerResponse> trailerCall, Response<TrailerResponse> response) {
-                    Log.d(TAG, trailerCall.request().url().toString());
-                    int trailerStatusCode = response.code();
-                    mTrailerResponse = response.body();
-                    mTrailAdapter.setTrailerData(mTrailerResponse);
-                    mTrailAdapter.notifyDataSetChanged();
-                    trailers = mTrailerResponse.getTrailers();
-
-                }
-
-
-                @Override
-                public void onFailure(Call<TrailerResponse> call, Throwable t) {
-                    Log.e(TAG, t.toString());
-
-                }
-            });
+       /* addfavouritesbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Movie movie = new Movie();
+                //mDb.movieDao().insertMovie(movie);
             }
+        });*/
+
+        final RecyclerView reviewCardView = (RecyclerView) findViewById(R.id.movie_review_recycler_view);
+        mReviewAdapter = new ReviewAdapter(reviews);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        reviewCardView.setLayoutManager(layoutManager);
+        reviewCardView.setHasFixedSize(true);
+        reviewCardView.setAdapter(mReviewAdapter);
+        reviewCardView.setItemAnimator(new DefaultItemAnimator());
+
+        TmdbReviewInterface reviewApiService =
+                TmdbApiClient.getClient().create(TmdbReviewInterface.class);
+
+        Call<ReviewResponse> reviewCall = reviewApiService.getMovieReviews(mCurrentMovie.getId(), API_KEY);
+        reviewCall.enqueue(new Callback<ReviewResponse>() {
+            @Override
+            public void onResponse(Call<ReviewResponse> reviewCall, Response<ReviewResponse> response) {
+                Log.d(TAG, reviewCall.request().url().toString());
+                int reviewStatusCode = response.code();
+                mReviewResponse = response.body();
+                mReviewAdapter.setReviewData(mReviewResponse);
+                mReviewAdapter.notifyDataSetChanged();
+                reviews = mReviewResponse.getReviews();
+            }
+
+            @Override
+            public void onFailure(Call<ReviewResponse> call, Throwable t) {
+                Log.e(TAG, t.toString());
+
+            }
+        });
+
+        final RecyclerView trailerCardView = (RecyclerView) findViewById(R.id.movie_trailer_recycler_view);
+        mTrailAdapter = new TrailerAdapter(trailers,  this);
+        LinearLayoutManager trailerlayoutManager = new LinearLayoutManager(this);
+        trailerlayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        trailerCardView.setLayoutManager(trailerlayoutManager);
+        trailerCardView.setHasFixedSize(true);
+        trailerCardView.setAdapter(mTrailAdapter);
+        trailerCardView.setItemAnimator(new DefaultItemAnimator());
+
+        TmdbTrailerInterface trailerapiService =
+                 TmdbApiClient.getClient().create(TmdbTrailerInterface.class);
+
+        Call<TrailerResponse> trailerCall = trailerapiService.getMovieTrailers(mCurrentMovie.getId(), API_KEY);
+        trailerCall.enqueue(new Callback<TrailerResponse>() {
+            @Override
+            public void onResponse(Call<TrailerResponse> trailerCall, Response<TrailerResponse> response) {
+                Log.d(TAG, trailerCall.request().url().toString());
+                int trailerStatusCode = response.code();
+                mTrailerResponse = response.body();
+                mTrailAdapter.setTrailerData(mTrailerResponse);
+                mTrailAdapter.notifyDataSetChanged();
+                trailers = mTrailerResponse.getTrailers();
+
+            }
+
+            @Override
+            public void onFailure(Call<TrailerResponse> call, Throwable t) {
+                Log.e(TAG, t.toString());
+
+            }
+        });
+
+        MovieViewModelFactory modelFactory = new MovieViewModelFactory(mDb, mCurrentMovie.getId());
+        final MovieViewModel movieViewModel = ViewModelProviders.of(this, modelFactory).get(MovieViewModel.class);
+        movieViewModel.getMovie().observe(DetailActivity.this, new Observer<Movie>() {
+            @Override
+            public void onChanged(@Nullable Movie movie) {
+                if (movie == null) {
+                    movieViewModel.getMovie().removeObserver(this);
+                } else {
+                    movieViewModel.getMovie().removeObserver(this);
+                }
+            }
+        });
+
+        /*addfavouritesbutton.setOnClickListener(
+                new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+
+
+                       MovieViewModelFactory modelFactory = new MovieViewModelFactory(mDb, mCurrentMovie.getId());
+                        final MovieViewModel movieViewModel1 = ViewModelProviders.of(DetailActivity.this, modelFactory).get(MovieViewModel.class);
+                        movieViewModel.getMovie().observe(DetailActivity.this, new Observer<Movie>() {
+                            @Override
+                            public void onChanged(@Nullable Movie movie) {
+
+                                if ((favorite) && (movie == null)) {
+                                    movieViewModel.getMovie().removeObserver(this);
+                                    if (!justDelete) {
+                                        saveFavorite();
+                                        //TODO BURAYA SET TEXT ON FAVOURITE BUTTON
+                                    }
+                                    else {
+                                        justDelete = false;
+                                    }
+                                } else if (!(favorite) && (movie != null)) {
+                                    movieViewModel.getMovie().removeObserver(this);
+                                    //TODO BURAYA SET TEXT ON FAVOURITE BUTTON ve toast ekle
+                                    deleteFavorite();
+                                    justDelete = true;
+                                }
+                            }
+                        });
+                    }
+
+                });*/
+
+        addfavouritesbutton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (buttonView.isChecked()) {
+                    saveFavorite();
+                    Toast.makeText(getApplicationContext(),"favourited",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    deleteFavorite();
+                    Toast.makeText(getApplicationContext(),"unfavourited",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
     @Override
     public void onClick(Trailer trailer) {
@@ -166,4 +242,48 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
         startActivity(intent);
     }
+
+    public void saveFavorite() {
+        final Movie favoriteMovie = new Movie(
+                mCurrentMovie.getId(),
+                mCurrentMovie.getTitle(),
+                mCurrentMovie.getReleaseDate(),
+                mCurrentMovie.getVoteAverage(),
+                mCurrentMovie.getOverview(),
+                mCurrentMovie.getPosterPath()
+        );
+
+        final FavouriteMoviesDatabase database = FavouriteMoviesDatabase.getsInstance(context);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                //if (!(movie.getId().equals(database.movieDao().loadMovieById(movie.getId()).getValue().getId()))) {
+                database.movieDao().insertMovie(favoriteMovie);
+                //}
+            }
+        });
+    }
+
+    private void deleteFavorite() {
+        final Movie favoriteMovie = new Movie(
+                mCurrentMovie.getId(),
+                mCurrentMovie.getTitle(),
+                mCurrentMovie.getReleaseDate(),
+                mCurrentMovie.getVoteAverage(),
+                mCurrentMovie.getOverview(),
+                mCurrentMovie.getPosterPath()
+        );
+        final FavouriteMoviesDatabase database = FavouriteMoviesDatabase.getsInstance(context);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                //if (movie.getId().equals(database.movieDao().loadMovieById(movie.getId()).getValue().getId())) {
+                database.movieDao().deleteMovie(favoriteMovie);
+                //}
+            }
+        });
+    }
+
 }
