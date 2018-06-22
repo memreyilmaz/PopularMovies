@@ -1,4 +1,4 @@
-package com.example.android.popularmoviesstagetwo;
+package com.example.android.popularmoviesstagetwo.database;
 
 import android.os.Handler;
 import android.os.Looper;

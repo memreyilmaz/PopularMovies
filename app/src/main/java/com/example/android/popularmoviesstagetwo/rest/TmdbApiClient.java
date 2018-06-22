@@ -1,4 +1,4 @@
-package com.example.android.popularmoviesstagetwo;
+package com.example.android.popularmoviesstagetwo.rest;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

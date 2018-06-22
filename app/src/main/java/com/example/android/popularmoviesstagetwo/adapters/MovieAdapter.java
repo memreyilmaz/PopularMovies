@@ -1,4 +1,4 @@
-package com.example.android.popularmoviesstagetwo;
+package com.example.android.popularmoviesstagetwo.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.android.popularmoviesstagetwo.model.Movie;
+import com.example.android.popularmoviesstagetwo.model.MovieResponse;
+import com.example.android.popularmoviesstagetwo.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -68,7 +71,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                 .resize(506, 759)
                 .centerCrop()
                 .into(holder.posterImageView);
-
     }
 
     @Override

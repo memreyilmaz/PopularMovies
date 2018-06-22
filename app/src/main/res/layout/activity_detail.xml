@@ -77,10 +77,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/add_favourite_button"
             android:layout_below="@id/movie_vote_average"
-            android:layout_toEndOf="@id/movie_poster"
-            android:textOn="@string/toggle_turn_on"
-            android:textOff="@string/toggle_turn_off"
-            android:checked="false"/>
+            android:layout_toEndOf="@id/movie_poster"/>
 
         <TextView
             android:id="@+id/movie_overview_textView"

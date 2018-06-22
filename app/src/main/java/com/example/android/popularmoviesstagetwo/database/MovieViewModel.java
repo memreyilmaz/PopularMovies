@@ -1,7 +1,9 @@
-package com.example.android.popularmoviesstagetwo;
+package com.example.android.popularmoviesstagetwo.database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+
+import com.example.android.popularmoviesstagetwo.model.Movie;
 
 public class MovieViewModel extends ViewModel {
 

@@ -23,9 +23,6 @@
     <string name="settings_sort_by_most_popular_value" translatable="false">popular</string>
 
 
-    <string name="label_vote_display">%.1f / 10</string>
+    <string name="label_vote_display">%.1f/10</string>
 
-    <string name="toggle_turn_on">Favourited</string>
-    <string name="toggle_turn_off">Add To Favourites</string>
-    <string name="btn_display">Display</string>
 </resources>

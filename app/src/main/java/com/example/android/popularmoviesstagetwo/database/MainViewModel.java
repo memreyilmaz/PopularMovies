@@ -1,10 +1,12 @@
-package com.example.android.popularmoviesstagetwo;
+package com.example.android.popularmoviesstagetwo.database;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.util.Log;
 
+
+import com.example.android.popularmoviesstagetwo.model.Movie;
 
 import java.util.List;
 

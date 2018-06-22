@@ -12,6 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.android.popularmoviesstagetwo.adapters.MovieAdapter;
+import com.example.android.popularmoviesstagetwo.model.Movie;
+import com.example.android.popularmoviesstagetwo.model.MovieResponse;
+import com.example.android.popularmoviesstagetwo.rest.TmdbApiClient;
+import com.example.android.popularmoviesstagetwo.rest.TmdbApiInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 

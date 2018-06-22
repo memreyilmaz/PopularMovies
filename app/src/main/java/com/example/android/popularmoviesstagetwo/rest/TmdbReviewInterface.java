@@ -1,4 +1,6 @@
-package com.example.android.popularmoviesstagetwo;
+package com.example.android.popularmoviesstagetwo.rest;
+
+import com.example.android.popularmoviesstagetwo.model.ReviewResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

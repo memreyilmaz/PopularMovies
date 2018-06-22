@@ -1,4 +1,4 @@
-package com.example.android.popularmoviesstagetwo;
+package com.example.android.popularmoviesstagetwo.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.android.popularmoviesstagetwo.R;
+import com.example.android.popularmoviesstagetwo.model.Review;
+import com.example.android.popularmoviesstagetwo.model.ReviewResponse;
 
 import java.util.List;
 

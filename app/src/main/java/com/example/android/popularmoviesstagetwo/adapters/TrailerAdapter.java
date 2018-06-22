@@ -1,4 +1,4 @@
-package com.example.android.popularmoviesstagetwo;
+package com.example.android.popularmoviesstagetwo.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -9,12 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.popularmoviesstagetwo.R;
+import com.example.android.popularmoviesstagetwo.model.Trailer;
+import com.example.android.popularmoviesstagetwo.model.TrailerResponse;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerAdapterViewHolder> {
 
     private static final String LOG_TAG = TrailerAdapter.class.getSimpleName();
-
+    public static final String TRAILER_PATH_PREFIX = "http://img.youtube.com/vi/";
+    public static final String TRAILER_PATH_SUFFIX = "/0.jpg";
     private List<Trailer> trailers;
     private TrailerResponse mTrailerResponse;
     private Context context;
@@ -65,8 +71,14 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
     public void onBindViewHolder(TrailerAdapterViewHolder holder, int position) {
 
         Trailer trailer = mTrailerResponse.getTrailers().get(position);
+        String youtubetrailerthumbnail = TRAILER_PATH_PREFIX + trailer.getKey() + TRAILER_PATH_SUFFIX;
+        Picasso.with(context)
+                .load(youtubetrailerthumbnail)
+                //.resize(506, 759)
+                //.centerCrop()
+                .into(holder.trailerImageView);
 
-        holder.trailerImageView.setImageResource(R.drawable.ic_play_circle_filled);
+        //holder.trailerImageView.setImageResource(R.drawable.ic_play_circle_filled);
         holder.trailerTextView.setText(trailer.getName());
     }
 

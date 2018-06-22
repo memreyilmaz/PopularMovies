@@ -1,4 +1,4 @@
-package com.example.android.popularmoviesstagetwo;
+package com.example.android.popularmoviesstagetwo.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
