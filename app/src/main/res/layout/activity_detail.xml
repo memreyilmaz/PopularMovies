@@ -76,6 +76,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/add_favourite_button"
+            android:textOn=""
+            android:textOff=""
             android:layout_below="@id/movie_vote_average"
             android:layout_toEndOf="@id/movie_poster"/>
 

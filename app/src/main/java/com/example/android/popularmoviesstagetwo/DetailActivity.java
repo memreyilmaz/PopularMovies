@@ -247,7 +247,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                     Log.d(TAG, "ADDED");
                     Toast.makeText(getApplicationContext(),"favourited",Toast.LENGTH_SHORT).show();
                 }
-                else {
+                else if(!buttonView.isChecked()){
                     deleteFavorite();
                     addfavouritesbutton.setChecked(false);
                     addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
@@ -317,7 +317,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         //Bundle bundle = new Bundle();
 
         outState.putParcelable(SAVED_STATE_KEY, mCurrentMovie);
-
+        //outState.putBoolean();
 
     }
 
