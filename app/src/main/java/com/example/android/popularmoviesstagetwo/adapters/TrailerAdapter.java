@@ -18,7 +18,6 @@ import java.util.List;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerAdapterViewHolder> {
 
-    private static final String LOG_TAG = TrailerAdapter.class.getSimpleName();
     public static final String TRAILER_PATH_PREFIX = "http://img.youtube.com/vi/";
     public static final String TRAILER_PATH_SUFFIX = "/0.jpg";
     private List<Trailer> trailers;
@@ -36,11 +35,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
     }
 
     public class TrailerAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public ImageView trailerImageView;
-        public TextView trailerTextView;
-        public CardView trailerCardView;
+        private ImageView trailerImageView;
+        private TextView trailerTextView;
+        private CardView trailerCardView;
 
-        public TrailerAdapterViewHolder(View view) {
+        private TrailerAdapterViewHolder(View view) {
             super(view);
             trailerImageView = view.findViewById(R.id.movie_trailer_play);
             trailerTextView = view.findViewById(R.id.movie_trailer);
@@ -59,7 +58,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
     @Override
     public TrailerAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.trailer_item, parent, false);
 
         return new TrailerAdapterViewHolder(view);
@@ -75,7 +73,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
                 //.resize(506, 759)
                 //.centerCrop()
                 .into(holder.trailerImageView);
-
         holder.trailerTextView.setText(trailer.getName());
     }
 
@@ -95,5 +92,4 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
         trailers = mTrailerResponse.getTrailers();
         notifyDataSetChanged();
     }
-
 }

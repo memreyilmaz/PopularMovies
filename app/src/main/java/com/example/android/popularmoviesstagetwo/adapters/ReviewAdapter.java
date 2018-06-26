@@ -1,6 +1,5 @@
 package com.example.android.popularmoviesstagetwo.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,22 +15,19 @@ import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdapterViewHolder> {
 
-    private static final String LOG_TAG = ReviewAdapter.class.getSimpleName();
-
     private List<Review> reviews;
     private ReviewResponse mReviewResponse;
-    private Context context;
 
     public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
     }
 
     public class ReviewAdapterViewHolder extends RecyclerView.ViewHolder {
-        public TextView reviewAuthorTextView;
-        public TextView reviewTextView;
-        public CardView reviewCardView;
+        private TextView reviewAuthorTextView;
+        private TextView reviewTextView;
+        private CardView reviewCardView;
 
-        public ReviewAdapterViewHolder(View view) {
+        private ReviewAdapterViewHolder(View view) {
             super(view);
             reviewAuthorTextView = view.findViewById(R.id.movie_review_author);
             reviewTextView = view.findViewById(R.id.movie_review);
@@ -42,7 +38,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
     @Override
     public ReviewAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_item, parent, false);
 
         return new ReviewAdapterViewHolder(view);

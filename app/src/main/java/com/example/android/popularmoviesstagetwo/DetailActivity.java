@@ -56,8 +56,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     public TrailerAdapter.TrailerAdapterOnClickHandler clickHandler;
     private ReviewAdapter mReviewAdapter;
     private TrailerAdapter mTrailAdapter;
-    private Review mCurrentReview;
-    private Trailer mCurrentTrailer;
     private FavouriteMoviesDatabase mDb;
     private String SAVED_STATE_KEY;
     boolean togglebuttonstatus = false;
@@ -74,85 +72,31 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         Intent intent = getIntent();
         mCurrentMovie = intent.getParcelableExtra(getString(R.string.parcel_movie));
 
-        // Get the title string from the Movie object,
         String movieTitle = mCurrentMovie.getTitle();
-
-        // Find the TextView with view ID title
         TextView titleTextView = (TextView) findViewById(R.id.movie_title);
-
-        // Display the title of the current movie in that TextView
         titleTextView.setText(movieTitle);
 
-        // Get the release date string from the Movie object,
         String movieReleaseDate = mCurrentMovie.getReleaseDate();
-
-        // Find the TextView with view ID release date
         TextView releaseDateTextView = (TextView) findViewById(R.id.movie_release_date);
-
-        // Display the release date of the current movie in that TextView
         releaseDateTextView.setText(movieReleaseDate);
 
-        // Find the ImageView with view ID poster
         ImageView posterImageView = (ImageView) findViewById(R.id.movie_poster);
-
         String poster = POSTER_PATH + mCurrentMovie.getPosterPath();
-
         Picasso.with(this)
                 .load(poster)
                 .into(posterImageView);
 
-        // Get the user rating string from the Movie object,
-        double movieVoteAverage = mCurrentMovie.getVoteAverage();
-
-        // Find the TextView with view ID user rating
+        //double movieVoteAverage = mCurrentMovie.getVoteAverage();
         TextView voteAverageTextView = (TextView) findViewById(R.id.movie_vote_average);
-
-        // Display the rating of the current movie in that TextView
         voteAverageTextView.setText(getString(R.string.label_vote_display, mCurrentMovie.getVoteAverage()));
 
-        // Get the overview string from the Movie object,
         String overview = mCurrentMovie.getOverview();
-
-        // Find the TextView with view ID overview
         TextView overviewTextView = (TextView) findViewById(R.id.movie_overview);
-
-        // Display the overview of the current movie in that TextView
         overviewTextView.setText(overview);
 
         final ToggleButton addfavouritesbutton = (ToggleButton) findViewById(R.id.add_favourite_button);
         addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
         //addfavouritesbutton.setChecked(false);
-       /* addfavouritesbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Movie movie = new Movie();
-                //mDb.movieDao().insertMovie(movie);
-            }
-        });*/
-
-       /*addfavouritesbutton.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               togglebuttonstatus = addfavouritesbutton.isChecked();
-               if (!addfavouritesbutton.isChecked())  {
-
-                   saveFavorite();
-                   //addfavouritesbutton.setChecked(true);
-                   addfavouritesbutton.setBackgroundResource(R.drawable.ic_star);
-                   Log.d(TAG, "ADDED");
-                   Toast.makeText(getApplicationContext(),"favourited",Toast.LENGTH_SHORT).show();
-               }
-               else if(addfavouritesbutton.isChecked()){
-
-                   deleteFavorite();
-                  // addfavouritesbutton.setChecked(false);
-                   addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
-                   Log.d(TAG, "DELETED");
-                   Toast.makeText(getApplicationContext(),"unfavourited",Toast.LENGTH_SHORT).show();
-               }
-           }
-       });*/
-
 
         addfavouritesbutton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -177,7 +121,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                 }
             }
         });
-
 
         final RecyclerView reviewCardView = (RecyclerView) findViewById(R.id.movie_review_recycler_view);
         mReviewAdapter = new ReviewAdapter(reviews);
@@ -256,41 +199,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                 }
             }
         });
-
-        /*addfavouritesbutton.setOnClickListener(
-                new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-
-
-                       MovieViewModelFactory modelFactory = new MovieViewModelFactory(mDb, mCurrentMovie.getId());
-                        final MovieViewModel movieViewModel1 = ViewModelProviders.of(DetailActivity.this, modelFactory).get(MovieViewModel.class);
-                        movieViewModel.getMovie().observe(DetailActivity.this, new Observer<Movie>() {
-                            @Override
-                            public void onChanged(@Nullable Movie movie) {
-
-                                if ((favorite) && (movie == null)) {
-                                    movieViewModel.getMovie().removeObserver(this);
-                                    if (!justDelete) {
-                                        saveFavorite();
-                                        //TODO BURAYA SET TEXT ON FAVOURITE BUTTON
-                                    }
-                                    else {
-                                        justDelete = false;
-                                    }
-                                } else if (!(favorite) && (movie != null)) {
-                                    movieViewModel.getMovie().removeObserver(this);
-                                    //TODO BURAYA SET TEXT ON FAVOURITE BUTTON ve toast ekle
-                                    deleteFavorite();
-                                    justDelete = true;
-                                }
-                            }
-                        });
-                    }
-
-                });*/
-
-
     }
 
     @Override
@@ -350,10 +258,8 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         super.onSaveInstanceState(outState);
 
         //Bundle bundle = new Bundle();
-
         outState.putParcelable(SAVED_STATE_KEY, mCurrentMovie);
         outState.putBoolean(STATE_TAG_FAVORITE, mIsFavoriteMovie);
-
     }
 
     @Override

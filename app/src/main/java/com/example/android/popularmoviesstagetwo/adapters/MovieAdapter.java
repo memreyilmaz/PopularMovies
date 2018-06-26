@@ -16,10 +16,7 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
-    private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
-
     public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
-
     private List<Movie> movies;
     private MovieResponse mMovieResponse;
     private Context context;
@@ -89,7 +86,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         movies = mMovieResponse.getMovies();
         notifyDataSetChanged();
     }
-
 }
 
 
