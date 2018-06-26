@@ -47,24 +47,18 @@ public class Movie implements Parcelable{
         this.overview = overview;
         this.posterPath = posterPath;
     }
+
     @Ignore
     public Movie() {
     }
 
-    private Movie (Parcel in){
-
-        //moviePoster = in.readString();
+    public Movie (Parcel in){
         id = in.readInt();
         title = in.readString();
         releaseDate = in.readString();
         posterPath = in.readString();
         voteAverage = in.readDouble();
         overview = in.readString();
-     //   this.voteAverage = ((double) in.readValue((double.class.getClassLoader())));
-    //    this.title = ((String) in.readValue((String.class.getClassLoader())));
-     //   this.posterPath = ((String) in.readValue((String.class.getClassLoader())));
-    //    this.overview = ((String) in.readValue((String.class.getClassLoader())));
-     //   this.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
     }
 
     @Override
@@ -84,6 +78,7 @@ public class Movie implements Parcelable{
     public void setId(int id) {
         this.id = id;
     }
+
     public double getVoteAverage() {
         return voteAverage;
     }
@@ -123,8 +118,6 @@ public class Movie implements Parcelable{
         return this;
     }
 
-
-
     public String getOverview() {
         return overview;
     }
@@ -156,19 +149,14 @@ public class Movie implements Parcelable{
         return 0;
     }
 
-
-
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
 
-        /*@SuppressWarnings({
-                "unchecked"
-        })*/
         @Override
         public Movie createFromParcel(Parcel parcel) {
             return new Movie(parcel);
         }
 
-        //@Override
+        @Override
         public Movie[] newArray(int i) {
             return new Movie[i];
         }

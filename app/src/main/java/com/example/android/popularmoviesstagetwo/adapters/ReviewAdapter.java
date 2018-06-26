@@ -22,7 +22,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
     private ReviewResponse mReviewResponse;
     private Context context;
 
-
     public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
     }
@@ -38,7 +37,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
             reviewTextView = view.findViewById(R.id.movie_review);
             reviewCardView = view.findViewById(R.id.movie_review_card_view);
         }
-
     }
 
     @Override
@@ -50,12 +48,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
         return new ReviewAdapterViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(ReviewAdapterViewHolder holder, int position) {
 
         Review review = mReviewResponse.getReviews().get(position);
-
         holder.reviewAuthorTextView.setText(review.getAuthor());
         holder.reviewTextView.setText(review.getContent());
     }
@@ -76,5 +72,4 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
         reviews = mReviewResponse.getReviews();
         notifyDataSetChanged();
     }
-
 }

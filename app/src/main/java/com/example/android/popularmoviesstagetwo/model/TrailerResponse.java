@@ -25,5 +25,4 @@ public class TrailerResponse {
     public void setTrailers(List<Trailer> trailers) {
         this.trailers = trailers;
     }
-
 }

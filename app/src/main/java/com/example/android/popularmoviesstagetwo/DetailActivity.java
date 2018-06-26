@@ -27,12 +27,12 @@ import com.example.android.popularmoviesstagetwo.database.MovieViewModel;
 import com.example.android.popularmoviesstagetwo.database.MovieViewModelFactory;
 import com.example.android.popularmoviesstagetwo.model.Movie;
 import com.example.android.popularmoviesstagetwo.model.Review;
-import com.example.android.popularmoviesstagetwo.model.Trailer;
 import com.example.android.popularmoviesstagetwo.model.ReviewResponse;
+import com.example.android.popularmoviesstagetwo.model.Trailer;
+import com.example.android.popularmoviesstagetwo.model.TrailerResponse;
 import com.example.android.popularmoviesstagetwo.rest.TmdbApiClient;
 import com.example.android.popularmoviesstagetwo.rest.TmdbReviewInterface;
 import com.example.android.popularmoviesstagetwo.rest.TmdbTrailerInterface;
-import com.example.android.popularmoviesstagetwo.model.TrailerResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -60,8 +60,11 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     private Trailer mCurrentTrailer;
     private FavouriteMoviesDatabase mDb;
     private String SAVED_STATE_KEY;
-
+    boolean togglebuttonstatus = false;
     Context context;
+    private boolean mIsFavoriteMovie;
+    private static final String STATE_TAG_FAVORITE = "tag_favorite";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +121,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
 
         final ToggleButton addfavouritesbutton = (ToggleButton) findViewById(R.id.add_favourite_button);
         addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
+        //addfavouritesbutton.setChecked(false);
        /* addfavouritesbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +129,55 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                 //mDb.movieDao().insertMovie(movie);
             }
         });*/
+
+       /*addfavouritesbutton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               togglebuttonstatus = addfavouritesbutton.isChecked();
+               if (!addfavouritesbutton.isChecked())  {
+
+                   saveFavorite();
+                   //addfavouritesbutton.setChecked(true);
+                   addfavouritesbutton.setBackgroundResource(R.drawable.ic_star);
+                   Log.d(TAG, "ADDED");
+                   Toast.makeText(getApplicationContext(),"favourited",Toast.LENGTH_SHORT).show();
+               }
+               else if(addfavouritesbutton.isChecked()){
+
+                   deleteFavorite();
+                  // addfavouritesbutton.setChecked(false);
+                   addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
+                   Log.d(TAG, "DELETED");
+                   Toast.makeText(getApplicationContext(),"unfavourited",Toast.LENGTH_SHORT).show();
+               }
+           }
+       });*/
+
+
+        addfavouritesbutton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
+                Log.w("togglebuttonstatus",String.valueOf(togglebuttonstatus));
+
+                togglebuttonstatus = addfavouritesbutton.isChecked();
+
+                if (toggleButton.isChecked()) {
+                    //addfavouritesbutton.setChecked(true);
+                    saveFavorite();
+                    addfavouritesbutton.setBackgroundResource(R.drawable.ic_star);
+                    Log.d(TAG, "ADDED");
+                    Toast.makeText(getApplicationContext(),"favourited",Toast.LENGTH_SHORT).show();
+                }
+                else if(!toggleButton.isChecked()){
+                    //addfavouritesbutton.setChecked(false);
+                    deleteFavorite();
+                    addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
+                    Log.d(TAG, "DELETED");
+                    Toast.makeText(getApplicationContext(),"unfavourited",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         final RecyclerView reviewCardView = (RecyclerView) findViewById(R.id.movie_review_recycler_view);
         mReviewAdapter = new ReviewAdapter(reviews);
@@ -237,25 +290,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
 
                 });*/
 
-        addfavouritesbutton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (buttonView.isChecked()) {
-                    saveFavorite();
-                    addfavouritesbutton.setChecked(true);
-                    addfavouritesbutton.setBackgroundResource(R.drawable.ic_star);
-                    Log.d(TAG, "ADDED");
-                    Toast.makeText(getApplicationContext(),"favourited",Toast.LENGTH_SHORT).show();
-                }
-                else if(!buttonView.isChecked()){
-                    deleteFavorite();
-                    addfavouritesbutton.setChecked(false);
-                    addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
-                    Log.d(TAG, "DELETED");
-                    Toast.makeText(getApplicationContext(),"unfavourited",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
     }
 
     @Override
@@ -317,7 +352,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         //Bundle bundle = new Bundle();
 
         outState.putParcelable(SAVED_STATE_KEY, mCurrentMovie);
-        //outState.putBoolean();
+        outState.putBoolean(STATE_TAG_FAVORITE, mIsFavoriteMovie);
 
     }
 
@@ -327,6 +362,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
 
         if (savedInstanceState != null) {
             mStateParcel = ((Bundle) savedInstanceState).getParcelable(SAVED_STATE_KEY);
+            mIsFavoriteMovie = savedInstanceState.getBoolean(STATE_TAG_FAVORITE);
         }
     }
 }

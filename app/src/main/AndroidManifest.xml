@@ -30,8 +30,10 @@
         <activity
             android:name=".SortActivity"
             android:label="@string/sort_title"
-            android:screenOrientation="portrait">
-            <meta-data
+            android:screenOrientation="portrait"
+            android:parentActivityName="com.example.android.popularmoviesstagetwo.MainActivity">
+
+        <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.popularmoviesstagetwo.MainActivity"/>
         </activity>

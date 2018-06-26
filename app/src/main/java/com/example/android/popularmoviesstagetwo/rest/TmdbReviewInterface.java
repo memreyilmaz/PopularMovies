@@ -11,5 +11,4 @@ public interface TmdbReviewInterface {
 
     @GET("movie/{id}/reviews")
     Call<ReviewResponse> getMovieReviews(@Path("id") int id, @Query("api_key") String apiKey);
-
 }

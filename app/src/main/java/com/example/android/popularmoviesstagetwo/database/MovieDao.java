@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface MovieDao {
 
-    @Query("SELECT * FROM favourite_movies")
+    @Query("SELECT * FROM favourite_movies ORDER BY title")
     LiveData<List<Movie>> loadAllMovies();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

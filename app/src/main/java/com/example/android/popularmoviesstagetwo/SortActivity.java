@@ -8,7 +8,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
-
 public class SortActivity extends AppCompatActivity {
 
     @Override
@@ -26,7 +25,6 @@ public class SortActivity extends AppCompatActivity {
             Preference sortBy = findPreference(getString(R.string.settings_sort_by_list_key));
             bindPreferenceSummaryToValue(sortBy);
         }
-
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -52,6 +50,5 @@ public class SortActivity extends AppCompatActivity {
             String preferenceString = preferences.getString(preference.getKey(), "");
             onPreferenceChange(preference, preferenceString);
         }
-
     }
 }

@@ -62,5 +62,4 @@ public class ReviewResponse {
     public void setTotalResults(int totalResults) {
         this.totalResults = totalResults;
     }
-
 }

@@ -24,10 +24,6 @@ public class MovieResponse implements Parcelable {
     private List<Movie> results;
     public final static Creator<MovieResponse> CREATOR = new Creator<MovieResponse>() {
 
-
-        @SuppressWarnings({
-                "unchecked"
-        })
         public MovieResponse createFromParcel(Parcel parcel) {
             return new MovieResponse(parcel);
         }
@@ -35,7 +31,6 @@ public class MovieResponse implements Parcelable {
         public MovieResponse[] newArray(int i) {
             return (new MovieResponse[i]);
         }
-
     };
 
     protected MovieResponse(Parcel parcel) {
@@ -44,25 +39,13 @@ public class MovieResponse implements Parcelable {
         totalResults = parcel.readInt();
 
         totalPages = parcel.readInt();
-        //movies = parcel.readList(List<Movie>);
-        //this.page = ((int) parcel.readValue((int.class.getClassLoader())));
-        //this.totalResults = ((int) parcel.readValue((int.class.getClassLoader())));
-        //this.totalPages = ((int) parcel.readValue((int.class.getClassLoader())));
+
         parcel.readList(this.results, (Movie.class.getClassLoader()));
     }
 
-    /**
-     * No args constructor for use in serialization
-     */
     public MovieResponse() {
     }
 
-    /**
-     * @param movies
-     * @param totalResults
-     * @param page
-     * @param totalPages
-     */
     public MovieResponse(int page, int totalResults, int totalPages, List<Movie> movies) {
         super();
         this.page = page;

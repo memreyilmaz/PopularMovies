@@ -30,7 +30,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
         void onClick(Trailer trailer);
     }
 
-
     public TrailerAdapter(List<Trailer> trailers, TrailerAdapterOnClickHandler trailerAdapterOnClickHandler) {
         this.trailerAdapterOnClickHandler = trailerAdapterOnClickHandler;
         this.trailers = trailers;
@@ -66,7 +65,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
         return new TrailerAdapterViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(TrailerAdapterViewHolder holder, int position) {
 
@@ -78,7 +76,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
                 //.centerCrop()
                 .into(holder.trailerImageView);
 
-        //holder.trailerImageView.setImageResource(R.drawable.ic_play_circle_filled);
         holder.trailerTextView.setText(trailer.getName());
     }
 
@@ -87,19 +84,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
         if (null == mTrailerResponse) return 0;
         return mTrailerResponse.getTrailers().size();
     }
-
-    /*public void addAll(List<Movie> movie) {
-        if (movies != null)
-            movies.clear();
-        movies.addAll(movie);
-        notifyDataSetChanged();
-    }*/
-
-    /*public void clear() {
-        if (movies != null)
-            movies.clear();
-        notifyDataSetChanged();
-    }*/
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

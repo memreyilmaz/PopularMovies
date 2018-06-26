@@ -79,19 +79,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         return mMovieResponse.getMovies().size();
     }
 
-    /*public void addAll(List<Movie> movie) {
-        if (movies != null)
-            movies.clear();
-        movies.addAll(movie);
-        notifyDataSetChanged();
-    }*/
-
-    /*public void clear() {
-        if (movies != null)
-            movies.clear();
-        notifyDataSetChanged();
-    }*/
-
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
