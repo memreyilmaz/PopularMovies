@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -45,7 +44,6 @@ import retrofit2.Response;
 public class DetailActivity extends AppCompatActivity implements TrailerAdapter.TrailerAdapterOnClickHandler {
     private static final String TAG = DetailActivity.class.getSimpleName();
     private static final String API_KEY = "fa0a36c54bae48da04a507ac7ce6126f";
-    private Parcelable mStateParcel;
 
     public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
     private Movie mCurrentMovie;
@@ -53,15 +51,12 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     List<Trailer> trailers= new ArrayList<>();
     private ReviewResponse mReviewResponse;
     private TrailerResponse mTrailerResponse;
-    public TrailerAdapter.TrailerAdapterOnClickHandler clickHandler;
+    //public TrailerAdapter.TrailerAdapterOnClickHandler clickHandler;
     private ReviewAdapter mReviewAdapter;
     private TrailerAdapter mTrailAdapter;
     private FavouriteMoviesDatabase mDb;
-    private String SAVED_STATE_KEY;
     boolean togglebuttonstatus = false;
     Context context;
-    private boolean mIsFavoriteMovie;
-    private static final String STATE_TAG_FAVORITE = "tag_favorite";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +81,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                 .load(poster)
                 .into(posterImageView);
 
-        //double movieVoteAverage = mCurrentMovie.getVoteAverage();
         TextView voteAverageTextView = (TextView) findViewById(R.id.movie_vote_average);
         voteAverageTextView.setText(getString(R.string.label_vote_display, mCurrentMovie.getVoteAverage()));
 
@@ -95,8 +89,12 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         overviewTextView.setText(overview);
 
         final ToggleButton addfavouritesbutton = (ToggleButton) findViewById(R.id.add_favourite_button);
-        addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
-        //addfavouritesbutton.setChecked(false);
+        if (addfavouritesbutton.isChecked()) {
+            addfavouritesbutton.setBackgroundResource(R.drawable.ic_star);
+        }
+        else if(!addfavouritesbutton.isChecked()){
+            addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
+        }
 
         addfavouritesbutton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -257,18 +255,15 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //Bundle bundle = new Bundle();
-        outState.putParcelable(SAVED_STATE_KEY, mCurrentMovie);
-        outState.putBoolean(STATE_TAG_FAVORITE, mIsFavoriteMovie);
+        outState.putParcelable("movieDetail", mCurrentMovie);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    protected void onRestoreInstanceState(Bundle outState) {
+        super.onRestoreInstanceState(outState);
 
-        if (savedInstanceState != null) {
-            mStateParcel = ((Bundle) savedInstanceState).getParcelable(SAVED_STATE_KEY);
-            mIsFavoriteMovie = savedInstanceState.getBoolean(STATE_TAG_FAVORITE);
+        if (outState != null) {
+            mCurrentMovie = ((Bundle) outState).getParcelable("movieDetail");
         }
     }
 }

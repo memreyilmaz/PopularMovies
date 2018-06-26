@@ -167,9 +167,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             startActivity(sortIntent);
             return true;
         }else if (id == R.id.favourite_movies) {
-            //Intent sortIntent = new Intent(this, SortActivity.class);
-            //startActivity(sortIntent);
-            initViews1();
+            Intent sortIntent = new Intent(this, FavouriteActivity.class);
+            startActivity(sortIntent);
+            //initViews1();
             return true;}
             return super.onOptionsItemSelected(item);
     }
