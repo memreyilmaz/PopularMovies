@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.android.popularmoviesstagetwo.adapters.FavouritesAdapter;
@@ -41,20 +40,19 @@ public class FavouriteActivity extends AppCompatActivity implements FavouritesAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
         mDb = FavouriteMoviesDatabase.getsInstance(getApplicationContext());
-        favouriteMovieListView = (RecyclerView) findViewById(R.id.favourite_movie_image);
+        favouriteMovieListView = findViewById(R.id.favourite_movie_image);
         mAdapter = new FavouritesAdapter(this, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
 
         favouriteMovieListView.setLayoutManager(layoutManager);
         favouriteMovieListView.setHasFixedSize(true);
         favouriteMovieListView.setAdapter(mAdapter);
-        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        mEmptyStateTextView = findViewById(R.id.empty_view);
 
             MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
             viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
                 @Override
                 public void onChanged(@Nullable List<Movie> movies) {
-                    Log.d(TAG, "Updating list of movies from LiveData in ViewModel");
                     // mAdapter = new FavouritesAdapter(FavouriteActivity.this, clickHandler);
                     //favouriteMovieListView.setAdapter(mAdapter);
                     mAdapter.setFavouriteMovieData(movies);

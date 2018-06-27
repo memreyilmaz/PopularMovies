@@ -35,7 +35,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Fa
 
         public FavouritesAdapterViewHolder(View view) {
             super(view);
-            posterImageView = (ImageView)view.findViewById(R.id.movie_poster);
+            posterImageView = view.findViewById(R.id.movie_poster);
             view.setOnClickListener(this);
         }
 

@@ -68,27 +68,27 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         mCurrentMovie = intent.getParcelableExtra(getString(R.string.parcel_movie));
 
         String movieTitle = mCurrentMovie.getTitle();
-        TextView titleTextView = (TextView) findViewById(R.id.movie_title);
+        TextView titleTextView = findViewById(R.id.movie_title);
         titleTextView.setText(movieTitle);
 
         String movieReleaseDate = mCurrentMovie.getReleaseDate();
-        TextView releaseDateTextView = (TextView) findViewById(R.id.movie_release_date);
+        TextView releaseDateTextView = findViewById(R.id.movie_release_date);
         releaseDateTextView.setText(movieReleaseDate);
 
-        ImageView posterImageView = (ImageView) findViewById(R.id.movie_poster);
+        ImageView posterImageView = findViewById(R.id.movie_poster);
         String poster = POSTER_PATH + mCurrentMovie.getPosterPath();
         Picasso.with(this)
                 .load(poster)
                 .into(posterImageView);
 
-        TextView voteAverageTextView = (TextView) findViewById(R.id.movie_vote_average);
+        TextView voteAverageTextView = findViewById(R.id.movie_vote_average);
         voteAverageTextView.setText(getString(R.string.label_vote_display, mCurrentMovie.getVoteAverage()));
 
         String overview = mCurrentMovie.getOverview();
-        TextView overviewTextView = (TextView) findViewById(R.id.movie_overview);
+        TextView overviewTextView = findViewById(R.id.movie_overview);
         overviewTextView.setText(overview);
 
-        final ToggleButton addfavouritesbutton = (ToggleButton) findViewById(R.id.add_favourite_button);
+        final ToggleButton addfavouritesbutton = findViewById(R.id.add_favourite_button);
         if (addfavouritesbutton.isChecked()) {
             addfavouritesbutton.setBackgroundResource(R.drawable.ic_star);
         }
@@ -99,7 +99,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         addfavouritesbutton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
-                Log.w("togglebuttonstatus",String.valueOf(togglebuttonstatus));
 
                 togglebuttonstatus = addfavouritesbutton.isChecked();
 
@@ -107,20 +106,18 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                     //addfavouritesbutton.setChecked(true);
                     saveFavorite();
                     addfavouritesbutton.setBackgroundResource(R.drawable.ic_star);
-                    Log.d(TAG, "ADDED");
                     Toast.makeText(getApplicationContext(),"favourited",Toast.LENGTH_SHORT).show();
                 }
                 else if(!toggleButton.isChecked()){
                     //addfavouritesbutton.setChecked(false);
                     deleteFavorite();
                     addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
-                    Log.d(TAG, "DELETED");
                     Toast.makeText(getApplicationContext(),"unfavourited",Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        final RecyclerView reviewCardView = (RecyclerView) findViewById(R.id.movie_review_recycler_view);
+        final RecyclerView reviewCardView = findViewById(R.id.movie_review_recycler_view);
         mReviewAdapter = new ReviewAdapter(reviews);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -152,7 +149,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
             }
         });
 
-        final RecyclerView trailerCardView = (RecyclerView) findViewById(R.id.movie_trailer_recycler_view);
+        final RecyclerView trailerCardView = findViewById(R.id.movie_trailer_recycler_view);
         mTrailAdapter = new TrailerAdapter(trailers,  this);
         LinearLayoutManager trailerlayoutManager = new LinearLayoutManager(this);
         trailerlayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

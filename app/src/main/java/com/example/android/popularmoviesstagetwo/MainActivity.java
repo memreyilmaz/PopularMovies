@@ -50,13 +50,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        movieListView = (RecyclerView) findViewById(R.id.movie_image);
+        movieListView = findViewById(R.id.movie_image);
         mAdapter = new MovieAdapter(movies, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         movieListView.setLayoutManager(layoutManager);
         movieListView.setHasFixedSize(true);
         movieListView.setAdapter(mAdapter);
-        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        mEmptyStateTextView = findViewById(R.id.empty_view);
 
 
         /*if (movies.isEmpty()) {
