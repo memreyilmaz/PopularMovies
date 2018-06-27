@@ -60,12 +60,6 @@ public class FavouriteActivity extends AppCompatActivity implements FavouritesAd
                     mAdapter.setFavouriteMovieData(movies);
                 }
             });
-
-        /*SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        String sort_by = sharedPrefs.getString(
-                getString(R.string.settings_sort_by_list_key),
-                getString(R.string.settings_sort_by_list_default));*/
     }
 
     @Override
