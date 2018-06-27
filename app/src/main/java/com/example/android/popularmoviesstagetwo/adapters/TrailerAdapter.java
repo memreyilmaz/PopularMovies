@@ -70,8 +70,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
         String youtubetrailerthumbnail = TRAILER_PATH_PREFIX + trailer.getKey() + TRAILER_PATH_SUFFIX;
         Picasso.with(context)
                 .load(youtubetrailerthumbnail)
-                //.resize(506, 759)
-                //.centerCrop()
                 .into(holder.trailerImageView);
         holder.trailerTextView.setText(trailer.getName());
     }

@@ -7,6 +7,8 @@
     <string name="movie_overview_label">Plot Synopsis</string>
 
     <string name="sort_title">Sort</string>
+    <string name="favourites_title">My Favourites</string>
+    <string name="details_title">Details</string>
 
     <string name="parcel_movie">PARCEL_MOVIE</string>
 

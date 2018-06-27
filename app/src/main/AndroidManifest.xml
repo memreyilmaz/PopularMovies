@@ -20,6 +20,7 @@
         </activity>
         <activity
             android:name=".DetailActivity"
+            android:label="@string/details_title"
             android:parentActivityName=".MainActivity">
 
             <meta-data
@@ -36,7 +37,8 @@
                 android:value="com.example.android.popularmoviesstagetwo.MainActivity" />
         </activity>
         <activity
-            android:name=".FavouriteActivity">
+            android:name=".FavouriteActivity"
+            android:label="@string/favourites_title">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.popularmoviesstagetwo.MainActivity" />
