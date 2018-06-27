@@ -42,20 +42,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity implements TrailerAdapter.TrailerAdapterOnClickHandler {
+
     private static final String TAG = DetailActivity.class.getSimpleName();
     private static final String API_KEY = "fa0a36c54bae48da04a507ac7ce6126f";
-
     public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
     private Movie mCurrentMovie;
     List<Review> reviews= new ArrayList<>();
     List<Trailer> trailers= new ArrayList<>();
     private ReviewResponse mReviewResponse;
     private TrailerResponse mTrailerResponse;
-    //public TrailerAdapter.TrailerAdapterOnClickHandler clickHandler;
     private ReviewAdapter mReviewAdapter;
     private TrailerAdapter mTrailAdapter;
     private FavouriteMoviesDatabase mDb;
-    boolean togglebuttonstatus = false;
     Context context;
 
     @Override
@@ -89,30 +87,21 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         overviewTextView.setText(overview);
 
         final ToggleButton addfavouritesbutton = findViewById(R.id.add_favourite_button);
-        if (addfavouritesbutton.isChecked()) {
-            addfavouritesbutton.setBackgroundResource(R.drawable.ic_star);
-        }
-        else if(!addfavouritesbutton.isChecked()){
-            addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
-        }
+        addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
 
         addfavouritesbutton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
 
-                togglebuttonstatus = addfavouritesbutton.isChecked();
-
                 if (toggleButton.isChecked()) {
-                    //addfavouritesbutton.setChecked(true);
                     saveFavorite();
                     addfavouritesbutton.setBackgroundResource(R.drawable.ic_star);
-                    Toast.makeText(getApplicationContext(),"favourited",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Added to My Favourites",Toast.LENGTH_SHORT).show();
                 }
                 else if(!toggleButton.isChecked()){
-                    //addfavouritesbutton.setChecked(false);
                     deleteFavorite();
                     addfavouritesbutton.setBackgroundResource(R.drawable.ic_star_border);
-                    Toast.makeText(getApplicationContext(),"unfavourited",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Removed from My Favourites",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -145,7 +134,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
             @Override
             public void onFailure(Call<ReviewResponse> call, Throwable t) {
                 Log.e(TAG, t.toString());
-
             }
         });
 
@@ -172,13 +160,11 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                 mTrailAdapter.setTrailerData(mTrailerResponse);
                 mTrailAdapter.notifyDataSetChanged();
                 trailers = mTrailerResponse.getTrailers();
-
             }
 
             @Override
             public void onFailure(Call<TrailerResponse> call, Throwable t) {
                 Log.e(TAG, t.toString());
-
             }
         });
 
@@ -220,9 +206,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                //if (!(movie.getId().equals(database.movieDao().loadMovieById(movie.getId()).getValue().getId()))) {
                 database.movieDao().insertMovie(favoriteMovie);
-                //}
             }
         });
     }
@@ -241,9 +225,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                //if (movie.getId().equals(database.movieDao().loadMovieById(movie.getId()).getValue().getId())) {
                 database.movieDao().deleteMovie(favoriteMovie);
-                //}
             }
         });
     }
@@ -251,7 +233,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putParcelable("movieDetail", mCurrentMovie);
     }
 

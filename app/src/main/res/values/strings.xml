@@ -14,6 +14,8 @@
 
     <string name="no_internet_connection">Please check your internet connection.</string>
 
+    <string name="no_favourite_movies">There is no favourite movies yet.</string>
+
     <string name="settings_sort_by_list_label">Sort By:</string>
     <string name="settings_sort_by_list_key">sort_by</string>
     <string name="settings_sort_by_list_default">@string/settings_sort_by_most_popular_value</string>
