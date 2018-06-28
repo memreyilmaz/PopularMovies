@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public static final String POPULAR_MOVIES = "popular";
     public static final String TOP_RATED_MOVIES = "top_rated";
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String API_KEY = "fa0a36c54bae48da04a507ac7ce6126f";
+    private static final String API_KEY = "";
     List<Movie> movies= new ArrayList<>();
     private MovieResponse mMovieResponse;
     private MovieAdapter mAdapter;
