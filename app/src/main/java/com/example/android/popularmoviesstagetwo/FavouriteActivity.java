@@ -2,7 +2,6 @@ package com.example.android.popularmoviesstagetwo;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,12 +23,10 @@ public class FavouriteActivity extends AppCompatActivity implements FavouritesAd
 
     private static final String TAG = FavouriteActivity.class.getSimpleName();
     List<Movie> movies= new ArrayList<>();
-    public FavouritesAdapter.FavouritesAdapterOnClickHandler clickHandler;
     private FavouritesAdapter mAdapter;
     private Movie mCurrentMovie;
     private TextView mEmptyStateTextView;
     RecyclerView favouriteMovieListView;
-    Context context;
     private FavouriteMoviesDatabase mDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
