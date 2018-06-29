@@ -45,10 +45,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // recovering the instance state
-       /* if (savedInstanceState != null) {
-            mCurrentMovie = savedInstanceState.getParcelable(STATE_MOVIE);
-        }*/
         setContentView(R.layout.activity_main);
 
         movieListView = findViewById(R.id.movie_image);
