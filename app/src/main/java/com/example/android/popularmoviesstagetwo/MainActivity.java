@@ -3,6 +3,7 @@ package com.example.android.popularmoviesstagetwo;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,9 +31,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public static final String POPULAR_MOVIES = "popular";
     public static final String TOP_RATED_MOVIES = "top_rated";
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String API_KEY = "";
+    private static final String API_KEY = "fa0a36c54bae48da04a507ac7ce6126f";
     List<Movie> movies= new ArrayList<>();
     private MovieResponse mMovieResponse;
+    public MovieAdapter.MovieAdapterOnClickHandler clickHandler;
     private MovieAdapter mAdapter;
     private Movie mCurrentMovie;
     private TextView mEmptyStateTextView;
@@ -42,6 +44,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // recovering the instance state
+       /* if (savedInstanceState != null) {
+            mCurrentMovie = savedInstanceState.getParcelable(STATE_MOVIE);
+        }*/
         setContentView(R.layout.activity_main);
 
         movieListView = findViewById(R.id.movie_image);
@@ -84,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 Log.e(TAG, t.toString());
             }
         });
+
     }
 
     private void getTopRatedMovies() {
@@ -174,4 +182,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         startActivity(intent);
     }
+
+  @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            movies = savedInstanceState.getParcelableArrayList("key");
+            super.onRestoreInstanceState(savedInstanceState);
+        }
+  }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putParcelableArrayList("key", (ArrayList<? extends Parcelable>) movies);
+        super.onSaveInstanceState(outState);
+    }
+
+
 }

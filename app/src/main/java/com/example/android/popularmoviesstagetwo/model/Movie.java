@@ -62,13 +62,13 @@ public class Movie implements Parcelable{
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeString(title);
-        parcel.writeString(releaseDate);
-        parcel.writeString(posterPath);
-        parcel.writeDouble(voteAverage);
-        parcel.writeString(overview);
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(id);
+        out.writeString(title);
+        out.writeString(releaseDate);
+        out.writeString(posterPath);
+        out.writeDouble(voteAverage);
+        out.writeString(overview);
     }
 
     public int getId() {
@@ -152,13 +152,13 @@ public class Movie implements Parcelable{
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
 
         @Override
-        public Movie createFromParcel(Parcel parcel) {
-            return new Movie(parcel);
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
         }
 
         @Override
-        public Movie[] newArray(int i) {
-            return new Movie[i];
+        public Movie[] newArray(int size) {
+            return new Movie[size];
         }
     };
 }
