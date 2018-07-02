@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.popularmoviesstagetwo.adapters.MovieAdapter;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public static final String POPULAR_MOVIES = "popular";
     public static final String TOP_RATED_MOVIES = "top_rated";
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String API_KEY = "";
+    private static final String API_KEY = "fa0a36c54bae48da04a507ac7ce6126f";
     List<Movie> movies= new ArrayList<>();
     private MovieResponse mMovieResponse;
     public MovieAdapter.MovieAdapterOnClickHandler clickHandler;
@@ -44,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+            if (savedInstanceState != null) {
+            movies = savedInstanceState.getParcelableArrayList("key");
+        } else {
+            getMovies();
+        }
 
         setContentView(R.layout.activity_main);
 
@@ -53,7 +57,28 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         movieListView.setLayoutManager(layoutManager);
         movieListView.setHasFixedSize(true);
         movieListView.setAdapter(mAdapter);
+
+
         mEmptyStateTextView = findViewById(R.id.empty_view);
+       // mAdapter.notifyDataSetChanged();
+
+        /*if (savedInstanceState != null) {
+            movies = savedInstanceState.getParcelableArrayList("key");
+            mAdapter.notifyDataSetChanged();
+          //  movieListView.setAdapter(mAdapter);
+
+//            mAdapter.setMovieData(mMovieResponse);
+            //   mAdapter.notifyDataSetChanged();
+           // setContentView(R.layout.activity_main);
+
+        } else {
+            getMovies();
+        }*/
+       //getMovies();
+
+    }
+
+    private void getMovies(){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         String sort_by = sharedPrefs.getString(
@@ -72,14 +97,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 mAdapter.setMovieData(mMovieResponse);
                 mAdapter.notifyDataSetChanged();
                 movies = mMovieResponse.getMovies();
-                if (movies.isEmpty()) {
-                    movieListView.setVisibility(View.GONE);
-                    mEmptyStateTextView.setVisibility(View.VISIBLE);
-                    mEmptyStateTextView.setText(R.string.no_internet_connection);
-                } else {
-                    movieListView.setVisibility(View.VISIBLE);
-                    mEmptyStateTextView.setVisibility(View.GONE);
-                }
             }
 
             @Override
@@ -87,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 Log.e(TAG, t.toString());
             }
         });
-
     }
+
 
     private void getTopRatedMovies() {
 
@@ -179,17 +196,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intent);
     }
 
-  @Override
+  /*@Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            movies = savedInstanceState.getParcelableArrayList("key");
+       // if (savedInstanceState != null) {
             super.onRestoreInstanceState(savedInstanceState);
-        }
-  }
+            movies = savedInstanceState.getParcelableArrayList("key");
+
+       // }
+  }*/
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
         outState.putParcelableArrayList("key", (ArrayList<? extends Parcelable>) movies);
         super.onSaveInstanceState(outState);
     }
