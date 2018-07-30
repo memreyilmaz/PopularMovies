@@ -1,9 +1,11 @@
 package com.example.android.popularmoviesstagetwo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,7 +22,6 @@ import com.example.android.popularmoviesstagetwo.rest.TmdbApiClient;
 import com.example.android.popularmoviesstagetwo.rest.TmdbApiInterface;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public static final String TOP_RATED_MOVIES = "top_rated";
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String API_KEY = "fa0a36c54bae48da04a507ac7ce6126f";
-    List<Movie> movies= new ArrayList<>();
+
+    private ArrayList<Movie> movies = new ArrayList<>();
     private MovieResponse mMovieResponse;
     public MovieAdapter.MovieAdapterOnClickHandler clickHandler;
     private MovieAdapter mAdapter;
@@ -39,49 +41,38 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private TextView mEmptyStateTextView;
     RecyclerView movieListView;
     TmdbApiInterface apiService;
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            if (savedInstanceState != null) {
-            movies = savedInstanceState.getParcelableArrayList("key");
-        } else {
-            getMovies();
-        }
 
         setContentView(R.layout.activity_main);
 
         movieListView = findViewById(R.id.movie_image);
+
+        mEmptyStateTextView = findViewById(R.id.empty_view);
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey("key")) {
+            initilaizeUi();
+            getMovies();
+        } else {
+            movies = savedInstanceState.getParcelableArrayList("key");
+            initilaizeUi();
+        }
+    }
+
+    private void initilaizeUi(){
         mAdapter = new MovieAdapter(movies, this);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+        layoutManager = new GridLayoutManager(this, 2);
         movieListView.setLayoutManager(layoutManager);
         movieListView.setHasFixedSize(true);
         movieListView.setAdapter(mAdapter);
-
-
-        mEmptyStateTextView = findViewById(R.id.empty_view);
-       // mAdapter.notifyDataSetChanged();
-
-        /*if (savedInstanceState != null) {
-            movies = savedInstanceState.getParcelableArrayList("key");
-            mAdapter.notifyDataSetChanged();
-          //  movieListView.setAdapter(mAdapter);
-
-//            mAdapter.setMovieData(mMovieResponse);
-            //   mAdapter.notifyDataSetChanged();
-           // setContentView(R.layout.activity_main);
-
-        } else {
-            getMovies();
-        }*/
-       //getMovies();
-
     }
 
     private void getMovies(){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        String sort_by = sharedPrefs.getString(
+           String sort_by = sharedPrefs.getString(
                 getString(R.string.settings_sort_by_list_key),
                 getString(R.string.settings_sort_by_list_default));
 
@@ -91,12 +82,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+
                 Log.d(TAG, call.request().url().toString());
-                int statusCode = response.code();
-                mMovieResponse = response.body();
-                mAdapter.setMovieData(mMovieResponse);
-                mAdapter.notifyDataSetChanged();
-                movies = mMovieResponse.getMovies();
+                      int statusCode = response.code();
+                      mMovieResponse = response.body();
+                      mAdapter.setMovieData(mMovieResponse);
+                      mAdapter.notifyDataSetChanged();
+                      movies = mMovieResponse.getMovies();
+
+               /* if (isInternetAvailable()) {
+                    movieListView.setVisibility(View.VISIBLE);
+                    mEmptyStateTextView.setVisibility(View.GONE);
+                } else {
+                    movieListView.setVisibility(View.GONE);
+                    mEmptyStateTextView.setVisibility(View.VISIBLE);
+                    mEmptyStateTextView.setText(R.string.no_internet_connection);
+                }*/
             }
 
             @Override
@@ -105,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             }
         });
     }
-
 
     private void getTopRatedMovies() {
 
@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -196,20 +195,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intent);
     }
 
-  /*@Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-       // if (savedInstanceState != null) {
-            super.onRestoreInstanceState(savedInstanceState);
-            movies = savedInstanceState.getParcelableArrayList("key");
-
-       // }
-  }*/
+  private boolean isInternetAvailable() {
+      ConnectivityManager connectivityManager
+              = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+      NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+      return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+  }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("key", (ArrayList<? extends Parcelable>) movies);
+    protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("key", movies);
     }
-
-
 }

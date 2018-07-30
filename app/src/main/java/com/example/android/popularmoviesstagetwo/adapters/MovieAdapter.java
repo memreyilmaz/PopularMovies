@@ -7,17 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.android.popularmoviesstagetwo.R;
 import com.example.android.popularmoviesstagetwo.model.Movie;
 import com.example.android.popularmoviesstagetwo.model.MovieResponse;
-import com.example.android.popularmoviesstagetwo.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
     public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
-    private List<Movie> movies;
+    private ArrayList<Movie> movies;
     private MovieResponse mMovieResponse;
     private Context context;
     private MovieAdapterOnClickHandler movieAdapterOnClickHandler;
@@ -26,7 +26,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         void onClick(Movie movie);
     }
 
-    public MovieAdapter(List<Movie> movies, MovieAdapterOnClickHandler movieAdapterOnClickHandler) {
+    public MovieAdapter(ArrayList<Movie> movies, MovieAdapterOnClickHandler movieAdapterOnClickHandler) {
         this.movieAdapterOnClickHandler = movieAdapterOnClickHandler;
         this.movies = movies;
     }
@@ -76,12 +76,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         return mMovieResponse.getMovies().size();
     }
 
-    public List<Movie> getMovies() {
+    public ArrayList<Movie> getMovies (ArrayList<Movie> movies) {
         return movies;
     }
 
+    public void swapList(
+            ArrayList<Movie> movies) {
+        movies = movies;
+        notifyDataSetChanged();
+    }
 
-    public void addAll(List<Movie> movies) {
+    public ArrayList<Movie> setMovies(ArrayList<Movie> movies) {
+        return movies;
+    }
+    public void addAll(ArrayList<Movie> movies) {
         if (movies != null)
             movies.clear();
         movies.addAll(movies);
