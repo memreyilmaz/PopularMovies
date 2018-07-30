@@ -54,15 +54,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mEmptyStateTextView = findViewById(R.id.empty_view);
 
         if (savedInstanceState == null || !savedInstanceState.containsKey("key")) {
-            initilaizeUi();
+            initializeUi();
             getMovies();
         } else {
             movies = savedInstanceState.getParcelableArrayList("key");
-            initilaizeUi();
+            initializeUi();
         }
     }
 
-    private void initilaizeUi(){
+    private void initializeUi(){
         mAdapter = new MovieAdapter(movies, this);
         layoutManager = new GridLayoutManager(this, 2);
         movieListView.setLayoutManager(layoutManager);
