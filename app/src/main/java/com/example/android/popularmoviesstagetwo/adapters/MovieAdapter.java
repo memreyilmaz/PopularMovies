@@ -12,12 +12,12 @@ import com.example.android.popularmoviesstagetwo.model.Movie;
 import com.example.android.popularmoviesstagetwo.model.MovieResponse;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
     public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
-    private ArrayList<Movie> movies;
+    private List<Movie> mMovies;
     private MovieResponse mMovieResponse;
     private Context context;
     private MovieAdapterOnClickHandler movieAdapterOnClickHandler;
@@ -26,9 +26,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         void onClick(Movie movie);
     }
 
-    public MovieAdapter(ArrayList<Movie> movies, MovieAdapterOnClickHandler movieAdapterOnClickHandler) {
+    public MovieAdapter(List<Movie> movies, MovieAdapterOnClickHandler movieAdapterOnClickHandler) {
         this.movieAdapterOnClickHandler = movieAdapterOnClickHandler;
-        this.movies = movies;
+        this.mMovies = movies;
     }
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -44,7 +44,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-            Movie movie = mMovieResponse.getMovies().get(adapterPosition);
+            Movie movie = mMovies.get(adapterPosition);
             movieAdapterOnClickHandler.onClick(movie);
         }
     }
@@ -61,7 +61,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
 
-        Movie movie = mMovieResponse.getMovies().get(position);
+        Movie movie = mMovies.get(position);
         String poster = POSTER_PATH + movie.getPosterPath();
         Picasso.with(context)
                 .load(poster)
@@ -72,37 +72,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public int getItemCount() {
-        if (null == mMovieResponse) return 0;
-        return mMovieResponse.getMovies().size();
+        if (null == mMovies) return 0;
+        return mMovies.size();
     }
 
-    public ArrayList<Movie> getMovies (ArrayList<Movie> movies) {
-        return movies;
+    public List<Movie> getMovies () {
+        return mMovies;
     }
 
-    public void swapList(
-            ArrayList<Movie> movies) {
-        movies = movies;
-        notifyDataSetChanged();
-    }
-
-    public ArrayList<Movie> setMovies(ArrayList<Movie> movies) {
-        return movies;
-    }
-    public void addAll(ArrayList<Movie> movies) {
-        if (movies != null)
-            movies.clear();
-        movies.addAll(movies);
-        notifyDataSetChanged();
-    }
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void setMovieData(MovieResponse movieResponse) {
-        mMovieResponse = movieResponse;
-        movies = mMovieResponse.getMovies();
+    public void setMovieData(List<Movie> movies) {
+        mMovies = movies;
         notifyDataSetChanged();
     }
 }

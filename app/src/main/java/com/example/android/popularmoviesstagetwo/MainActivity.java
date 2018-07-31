@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.popularmoviesstagetwo.adapters.MovieAdapter;
@@ -58,16 +59,27 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             getMovies();
         } else {
             movies = savedInstanceState.getParcelableArrayList("key");
+
             initializeUi();
+            mAdapter = new MovieAdapter(movies, this);
+            movieListView.setAdapter(mAdapter);
+        }
+
+        if (isInternetAvailable()) {
+           movieListView.setVisibility(View.VISIBLE);
+           mEmptyStateTextView.setVisibility(View.GONE);
+        } else {
+           movieListView.setVisibility(View.GONE);
+           mEmptyStateTextView.setVisibility(View.VISIBLE);
+           mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
     }
 
     private void initializeUi(){
-        mAdapter = new MovieAdapter(movies, this);
+
         layoutManager = new GridLayoutManager(this, 2);
         movieListView.setLayoutManager(layoutManager);
         movieListView.setHasFixedSize(true);
-        movieListView.setAdapter(mAdapter);
     }
 
     private void getMovies(){
@@ -84,20 +96,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
 
                 Log.d(TAG, call.request().url().toString());
-                      int statusCode = response.code();
-                      mMovieResponse = response.body();
-                      mAdapter.setMovieData(mMovieResponse);
-                      mAdapter.notifyDataSetChanged();
-                      movies = mMovieResponse.getMovies();
-
-               /* if (isInternetAvailable()) {
-                    movieListView.setVisibility(View.VISIBLE);
-                    mEmptyStateTextView.setVisibility(View.GONE);
-                } else {
-                    movieListView.setVisibility(View.GONE);
-                    mEmptyStateTextView.setVisibility(View.VISIBLE);
-                    mEmptyStateTextView.setText(R.string.no_internet_connection);
-                }*/
+                int statusCode = response.code();
+                movies = response.body().getMovies();
+                mAdapter = new MovieAdapter(movies, MainActivity.this);
+                movieListView.setAdapter(mAdapter);
+                mAdapter.setMovieData(movies);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -115,10 +119,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                     Log.d(TAG, call.request().url().toString());
                     int statusCode = response.code();
-                    mMovieResponse = response.body();
-                    mAdapter.setMovieData(mMovieResponse);
-                    mAdapter.notifyDataSetChanged();
-                    movies = mMovieResponse.getMovies();
+                    movies = response.body().getMovies();
+                    mAdapter.setMovieData(movies);
                 }
 
                 @Override
@@ -136,10 +138,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 Log.d(TAG, call.request().url().toString());
                 int statusCode = response.code();
-                mMovieResponse = response.body();
-                mAdapter.setMovieData(mMovieResponse);
-                mAdapter.notifyDataSetChanged();
-                movies = mMovieResponse.getMovies();
+                movies = response.body().getMovies();
+                mAdapter.setMovieData(movies);
             }
 
             @Override
@@ -154,8 +154,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
