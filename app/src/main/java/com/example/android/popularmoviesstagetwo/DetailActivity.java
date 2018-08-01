@@ -45,7 +45,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     private static final String TAG = DetailActivity.class.getSimpleName();
     private static final String API_KEY = "fa0a36c54bae48da04a507ac7ce6126f";
     public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
-    private static final String STATE_FAVORITE = "favouriteState";
     private Movie mCurrentMovie;
     List<Review> reviews= new ArrayList<>();
     List<Trailer> trailers= new ArrayList<>();
