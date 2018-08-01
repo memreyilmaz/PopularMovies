@@ -43,7 +43,7 @@ import retrofit2.Response;
 public class DetailActivity extends AppCompatActivity implements TrailerAdapter.TrailerAdapterOnClickHandler {
 
     private static final String TAG = DetailActivity.class.getSimpleName();
-    private static final String API_KEY = "fa0a36c54bae48da04a507ac7ce6126f";
+    private static final String API_KEY = "";
     public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
     private Movie mCurrentMovie;
     List<Review> reviews= new ArrayList<>();
