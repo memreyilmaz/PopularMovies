@@ -71,15 +71,13 @@
             android:paddingTop="8dp"
             tools:text="movie_vote_average" />
 
-        <ToggleButton
+        <ImageView
             android:id="@+id/add_favourite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/movie_vote_average"
             android:layout_toEndOf="@id/movie_poster"
-            android:padding="24dp"
-            android:textOff=""
-            android:textOn="" />
+            android:padding="24dp"/>
 
         <TextView
             android:id="@+id/movie_overview_textView"
